@@ -6,6 +6,7 @@ use App\Filament\Resources\CompanyResource\Pages;
 use App\Filament\Resources\CompanyResource\RelationManagers;
 use App\Models\Company;
 use Filament\Forms;
+use Filament\Resources\Concerns\Translatable;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
@@ -15,6 +16,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class CompanyResource extends Resource
 {
+    use Translatable;
     protected static ?string $model = Company::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-collection';
@@ -73,5 +75,9 @@ class CompanyResource extends Resource
             'view' => Pages\ViewCompany::route('/{record}'),
             'edit' => Pages\EditCompany::route('/{record}/edit'),
         ];
+    }
+    public static function getTranslatableLocales(): array
+    {
+        return ['en', 'bn'];
     }
 }
