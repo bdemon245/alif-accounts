@@ -1,5 +1,6 @@
 <?php
 
+use App\Helpers\TranslateGPT;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,4 +16,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+Route::get('gpt/{text}', function ($text) {
+    $gpt = new TranslateGPT();
+    $response = $gpt->translate($text);
+    dd($response->content);
 });

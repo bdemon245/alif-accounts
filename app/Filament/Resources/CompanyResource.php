@@ -78,8 +78,4 @@ class CompanyResource extends Resource
             'edit' => Pages\EditCompany::route('/{record}/edit'),
         ];
     }
-    public static function getTranslatableLocales(): array
-    {
-        return ['en', 'bn',];
-    }
 }

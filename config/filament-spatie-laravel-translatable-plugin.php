@@ -13,6 +13,6 @@ return [
     |
     */
 
-    'default_locales' => [config('app.locale')],
+    'default_locales' => [config('app.locale'), 'bn'],
 
 ];
