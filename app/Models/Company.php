@@ -10,5 +10,5 @@ class Company extends Model
 {
     use HasFactory, HasTranslations;
     protected $guarded = [];
-    protected $translatable = ['name'];
+    protected $translatable = [];
 }

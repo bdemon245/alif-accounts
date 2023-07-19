@@ -18,8 +18,9 @@ class CompanyResource extends Resource
 {
     use Translatable;
     protected static ?string $model = Company::class;
-
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    
+    protected static ?string $recordTitleAttribute = 'name';
+    protected static ?string $navigationIcon = 'heroicon-o-user';
 
     public static function form(Form $form): Form
     {
@@ -49,7 +50,8 @@ class CompanyResource extends Resource
                     ->dateTime(),
             ])
             ->filters([
-                //
+                Tables\Filters\Filter::make('has phone')
+                ->query(fn (Builder $query): Builder => $query->whereNotNull('phone')),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
@@ -78,6 +80,6 @@ class CompanyResource extends Resource
     }
     public static function getTranslatableLocales(): array
     {
-        return ['en', 'bn'];
+        return ['en', 'bn',];
     }
 }
