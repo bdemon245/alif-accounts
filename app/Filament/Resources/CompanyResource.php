@@ -18,7 +18,7 @@ class CompanyResource extends Resource
 {
     use Translatable;
     protected static ?string $model = Company::class;
-    
+
     protected static ?string $recordTitleAttribute = 'name';
     protected static ?string $navigationIcon = 'heroicon-o-user';
 
@@ -51,7 +51,7 @@ class CompanyResource extends Resource
             ])
             ->filters([
                 Tables\Filters\Filter::make('has phone')
-                ->query(fn (Builder $query): Builder => $query->whereNotNull('phone')),
+                    ->query(fn (Builder $query): Builder => $query->whereNotNull('phone')),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
