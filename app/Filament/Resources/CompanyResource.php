@@ -2,17 +2,18 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\CompanyResource\Pages;
-use App\Filament\Resources\CompanyResource\RelationManagers;
-use App\Models\Company;
 use Filament\Forms;
-use Filament\Resources\Concerns\Translatable;
-use Filament\Resources\Form;
-use Filament\Resources\Resource;
-use Filament\Resources\Table;
 use Filament\Tables;
+use App\Models\Company;
+use Filament\Resources\Form;
+use Filament\Resources\Table;
+use Filament\Resources\Resource;
+use Illuminate\Support\Facades\Lang;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Resources\Concerns\Translatable;
+use App\Filament\Resources\CompanyResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\CompanyResource\RelationManagers;
 
 class CompanyResource extends Resource
 {
@@ -22,6 +23,14 @@ class CompanyResource extends Resource
     protected static ?string $recordTitleAttribute = 'name';
     protected static ?string $navigationIcon = 'heroicon-o-user';
 
+    public static function getModelLabel(): string
+    {
+        return trans('Company');
+    }
+    public static function getPluralModelLabel(): string
+    {
+        return trans('Companies');
+    }
     public static function form(Form $form): Form
     {
         return $form
