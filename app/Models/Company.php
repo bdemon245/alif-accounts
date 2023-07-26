@@ -16,14 +16,14 @@ class Company extends Model
     /**
      * The "booted" method of the model.
      */
-    protected static function booted(): void
-    {
-        static::created(function (Company $company) {
-            $gpt = new TranslateGPT;
-            $content = json_decode($gpt->translate($company->name)->content);
-            $translation = ['en' => $content->en, 'bn' => $content->bn];
-            $company->name = $translation;
-            $company->save();
-        });
-    }
+    // protected static function booted(): void
+    // {
+    //     static::created(function (Company $company) {
+    //         $gpt = new TranslateGPT;
+    //         $content = json_decode($gpt->translate($company->name)->content);
+    //         $translation = ['en' => $content->en, 'bn' => $content->bn];
+    //         $company->name = $translation;
+    //         $company->save();
+    //     });
+    // }
 }
