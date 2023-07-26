@@ -1,6 +1,7 @@
 <?php
 
 use App\Helpers\TranslateGPT;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,4 +22,15 @@ Route::get('gpt/{text}', function ($text) {
     $gpt = new TranslateGPT();
     $response = $gpt->translate($text);
     dd($response->content);
+});
+
+Route::get('/toggle-language', function () {
+    $isEnglish = App::currentLocale() === 'en';
+    if (!$isEnglish) {
+        App::setLocale('en');
+    } else {
+        App::setLocale('bn');
+    }
+
+    return back()->with('success','Language changed');
 });

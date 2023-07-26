@@ -15,6 +15,7 @@ export default {
                 primary: colors.teal,
                 success: colors.green,
                 warning: colors.yellow,
+                secondary: colors.sky,
             },
         },
     },

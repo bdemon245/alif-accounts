@@ -41,13 +41,13 @@ class CompanyResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name'),
-                Tables\Columns\TextColumn::make('alias'),
+                Tables\Columns\TextColumn::make('name')
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('phone'),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime(),
+                    ->since(),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime(),
+                    ->since(),
             ])
             ->filters([
                 Tables\Filters\Filter::make('has phone')

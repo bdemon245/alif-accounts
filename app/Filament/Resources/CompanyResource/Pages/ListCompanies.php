@@ -15,7 +15,6 @@ class ListCompanies extends ListRecords
     {
         return [
             Actions\CreateAction::make(),
-            Actions\LocaleSwitcher::make(),
         ];
     }
 }
