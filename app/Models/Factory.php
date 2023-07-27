@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Factory extends Model
 {
     use HasFactory;
+    protected $guarded = [];
 
     /**
      * Get all of the phones.

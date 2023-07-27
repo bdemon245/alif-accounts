@@ -27,13 +27,13 @@ return new class extends Migration
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
             $table->date('delivery_date');
-            $table->enum('type', ['cash', 'due']);
+            $table->boolean('is_cash')->default(false);
             $table->bigInteger('chalan_total')->nullable();
             $table->bigInteger('rent_total')->nullable();
             $table->bigInteger('advance_total')->nullable();
             $table->bigInteger('due_total')->nullable();
             $table->bigInteger('commission_total')->nullable();
-            $table->boolean('status');
+            $table->boolean('status')->default(true);
             $table->timestamps();
         });
 

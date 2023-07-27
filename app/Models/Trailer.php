@@ -11,6 +11,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Trailer extends Model
 {
     use HasFactory;
+    protected $guarded = [];
+    
     function company(): BelongsTo
     {
         return $this->belongsTo(Company::class);

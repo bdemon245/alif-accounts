@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class Trip extends Model
 {
     use HasFactory;
+    protected $guarded = [];
 
     function companies(): BelongsTo
     {

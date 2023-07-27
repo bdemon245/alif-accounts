@@ -11,9 +11,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Company extends Model
 {
-    use HasFactory, HasTranslations;
+    use HasFactory;
     protected $guarded = [];
-    protected $translatable = ['name'];
 
     /**
      * Get all of the phones.

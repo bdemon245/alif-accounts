@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Party extends Model
 {
     use HasFactory;
+    protected $guarded = [];
+    
     function factories(): HasMany
     {
         return $this->hasMany(Factory::class);

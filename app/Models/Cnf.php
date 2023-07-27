@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Cnf extends Model
 {
     use HasFactory;
+    protected $guarded = [];
 
     /**
      * Get all of the phones.

@@ -19,7 +19,7 @@ return new class extends Migration
                 ->constrained()
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-            $table->bigInteger('number');
+            $table->string('number')->unique();
             $table->timestamps();
         });
 

@@ -17,7 +17,17 @@ class TrailerResource extends Resource
 {
     protected static ?string $model = Trailer::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $recordTitleAttribute = 'number';
+    protected static ?string $navigationIcon = 'heroicon-o-truck';
+
+    public static function getModelLabel(): string
+    {
+        return trans('Trailer');
+    }
+    public static function getPluralModelLabel(): string
+    {
+        return trans('Trailers');
+    }
 
     public static function form(Form $form): Form
     {
