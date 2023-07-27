@@ -27,7 +27,7 @@ return new class extends Migration
             $table->bigInteger('advance')->nullable();
             $table->bigInteger('due')->nullable();
             $table->bigInteger('commission')->nullable();
-            $table->boolean('is_chalan_received');
+            $table->boolean('chalan_returned')->default(false);
             $table->timestamps();
         });
     }

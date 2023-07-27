@@ -18,11 +18,11 @@ return new class extends Migration
                 ->constrained()
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-                $table->foreignId('party_id')
+            $table->foreignId('party_id')
                 ->constrained()
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-                $table->foreignId('factory_id')
+            $table->foreignId('factory_id')
                 ->constrained()
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
@@ -33,10 +33,10 @@ return new class extends Migration
             $table->bigInteger('advance_total')->nullable();
             $table->bigInteger('due_total')->nullable();
             $table->bigInteger('commission_total')->nullable();
+            $table->boolean('chalan_collected')->default(false);
             $table->boolean('status')->default(true);
             $table->timestamps();
         });
-
     }
 
     /**
