@@ -11,15 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::disableForeignKeyConstraints();
 
         Schema::create('phones', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('number');
+            $table->text('phonable_type');
+            $table->bigInteger('phonable_id');
             $table->timestamps();
         });
 
-        Schema::enableForeignKeyConstraints();
     }
 
     /**

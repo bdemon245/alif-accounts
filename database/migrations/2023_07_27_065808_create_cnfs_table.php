@@ -11,8 +11,6 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::disableForeignKeyConstraints();
-
         Schema::create('cnfs', function (Blueprint $table) {
             $table->id();
             $table->foreignId('party_id')
@@ -22,8 +20,6 @@ return new class extends Migration
             $table->text('name');
             $table->timestamps();
         });
-
-        Schema::enableForeignKeyConstraints();
     }
 
     /**

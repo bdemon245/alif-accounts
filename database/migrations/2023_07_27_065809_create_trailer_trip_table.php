@@ -11,7 +11,6 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::disableForeignKeyConstraints();
 
         Schema::create('trailer_trip', function (Blueprint $table) {
             $table->id();
@@ -19,11 +18,11 @@ return new class extends Migration
                 ->constrained()
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-                $table->foreignId('trailer_id')
+            $table->foreignId('trailer_id')
                 ->constrained()
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-            $table->bigInteger('chalan');
+            $table->bigInteger('chalan')->nullable();
             $table->bigInteger('rent')->nullable();
             $table->bigInteger('advance')->nullable();
             $table->bigInteger('due')->nullable();
@@ -31,8 +30,6 @@ return new class extends Migration
             $table->boolean('is_chalan_received');
             $table->timestamps();
         });
-
-        Schema::enableForeignKeyConstraints();
     }
 
     /**
