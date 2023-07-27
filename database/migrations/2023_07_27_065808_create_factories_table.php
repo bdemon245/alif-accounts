@@ -18,8 +18,8 @@ return new class extends Migration
                 ->constrained()
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-            $table->bigInteger('name');
-            $table->longText('address');
+            $table->text('name')->nullable();
+            $table->text('address');
             $table->timestamps();
         });
 

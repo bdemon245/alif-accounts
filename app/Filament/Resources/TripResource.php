@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use Filament\Forms;
 use App\Models\Trip;
 use Filament\Tables;
+use App\Models\Party;
 use App\Models\Company;
 use Filament\Resources\Form;
 use Filament\Resources\Table;
@@ -35,8 +36,24 @@ class TripResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Select::make('party_id')
-                ->relationship('parties', 'name')
-                ->required(),
+                    ->relationship('parties', 'name')
+                    ->required()
+                    ->reactive()
+                    ->createOptionForm([
+                        Forms\Components\TextInput::make('name')
+                            ->required(),
+                    ]),
+                Forms\Components\Select::make('factory_id')
+                    ->options(function (callable $get) {
+                        $id = $get('party_id');
+                        if ($id > 0) {
+                            # code...
+                            $trailers = Party::find($id)->factories;
+                            return $trailers->pluck('address');
+                        }
+                        return [];
+                    })
+                    ->required(),
                 Repeater::make('trailers')
                     ->schema([
                         Forms\Components\Select::make('companyId')
@@ -61,9 +78,7 @@ class TripResource extends Resource
                             ->required(),
                     ])
                     ->columns(2),
-                Forms\Components\Select::make('factory_id')
-                    ->relationship('factories', 'name')
-                    ->required(),
+
                 Forms\Components\DatePicker::make('delivery_date')
                     ->required(),
                 Forms\Components\Toggle::make('is_cash')
