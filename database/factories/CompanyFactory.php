@@ -18,7 +18,6 @@ class CompanyFactory extends Factory
     {
         return [
           'name'=> fake('bn_BD')->name('male'),
-          'phone'=> fake()->phoneNumber(),
         ];
     }
 }
