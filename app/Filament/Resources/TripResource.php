@@ -2,16 +2,18 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\TripResource\Pages;
-use App\Filament\Resources\TripResource\RelationManagers;
-use App\Models\Trip;
 use Filament\Forms;
-use Filament\Resources\Form;
-use Filament\Resources\Resource;
-use Filament\Resources\Table;
+use App\Models\Trip;
 use Filament\Tables;
+use App\Models\Company;
+use Filament\Resources\Form;
+use Filament\Resources\Table;
+use Filament\Resources\Resource;
+use Filament\Forms\Components\Repeater;
 use Illuminate\Database\Eloquent\Builder;
+use App\Filament\Resources\TripResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\TripResource\RelationManagers;
 
 class TripResource extends Resource
 {
@@ -32,24 +34,45 @@ class TripResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('company_id')
-                    ->relationship('companies','name')
-                    ->required(),
                 Forms\Components\Select::make('party_id')
-                    ->relationship('parties','name')
-                    ->required(),
+                ->relationship('parties', 'name')
+                ->required(),
+                Repeater::make('trailers')
+                    ->schema([
+                        Forms\Components\Select::make('companyId')
+                            ->label(trans('Company'))
+                            ->options(Company::all()->pluck('name', 'id'))
+                            ->reactive()
+                            // ->default(0)
+                            // ->afterStateUpdated(fn (callable $set) => $set('trailerNo', null))
+                            ->required(),
+                        Forms\Components\Select::make('trailerNo')
+                            ->label('Trailer')
+                            ->multiple()
+                            ->options(function (callable $get) {
+                                $id = $get('companyId');
+                                if ($id > 0) {
+                                    # code...
+                                    $trailers = Company::find($id)->trailers;
+                                    return $trailers->pluck('number');
+                                }
+                                return [];
+                            })
+                            ->required(),
+                    ])
+                    ->columns(2),
                 Forms\Components\Select::make('factory_id')
-                    ->relationship('factories','name')
+                    ->relationship('factories', 'name')
                     ->required(),
                 Forms\Components\DatePicker::make('delivery_date')
                     ->required(),
                 Forms\Components\Toggle::make('is_cash')
                     ->required(),
-                Forms\Components\TextInput::make('chalan_total'),
-                Forms\Components\TextInput::make('rent_total'), 
-                Forms\Components\TextInput::make('advance_total'),
-                Forms\Components\TextInput::make('due_total'),
-                Forms\Components\TextInput::make('commission_total'),
+                // Forms\Components\TextInput::make('chalan_total'),
+                // Forms\Components\TextInput::make('rent_total'), 
+                // Forms\Components\TextInput::make('advance_total'),
+                // Forms\Components\TextInput::make('due_total'),
+                // Forms\Components\TextInput::make('commission_total'),
             ]);
     }
 

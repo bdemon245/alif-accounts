@@ -3,8 +3,10 @@
 namespace Database\Seeders;
 
 use App\Models\Company;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Trailer;
+use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class CompanySeeder extends Seeder
 {
@@ -13,6 +15,49 @@ class CompanySeeder extends Seeder
      */
     public function run(): void
     {
-        Company::factory(50)->create();
+        $companies = Company::factory(10)->create();
+        $characters = [
+            'CMTA 11',
+            'CMTA 12',
+            'CMSHA 11',
+            'CMDA 81',
+            'DMTA 80',
+            'DMTA 20',
+            'DMTA 11',
+            'DMTA 84',
+            'DMDA 80',
+            'DMDA 84',
+            'FPDA 11'
+        ];
+        function trailerNumber()
+        {
+            $characters = [
+                'CMTA 11',
+                'CMTA 12',
+                'CMSHA 11',
+                'CMDA 81',
+                'DMTA 80',
+                'DMTA 20',
+                'DMTA 11',
+                'DMTA 84',
+                'DMDA 80',
+                'DMDA 84',
+                'FPDA 11'
+            ];
+            return fake()->randomElement($characters)
+                . "-" . fake()->randomDigit()
+                . fake()->randomDigit()
+                . fake()->randomDigit()
+                . fake()->randomDigit();
+        }
+
+        foreach ($companies as $key => $company) {
+            foreach (range(1, 6) as $key => $value) {
+                Trailer::create([
+                    'company_id' => $company->id,
+                    'number' => trailerNumber()
+                ]);
+            }
+        }
     }
 }
