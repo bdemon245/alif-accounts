@@ -52,7 +52,7 @@ class TripResource extends Resource
                             ->required(),
                         Forms\Components\Select::make('party_id')
                             ->label('Party')
-                            ->relationship('parties', 'name')
+                            ->options(Party::all()->pluck('name', 'id'))
                             ->required()
                             ->reactive()
                             ->createOptionForm([
@@ -89,8 +89,7 @@ class TripResource extends Resource
                             ->options(Company::all()->pluck('name', 'id'))
                             ->reactive()
                             ->searchable()
-                            ->afterStateUpdated(fn (callable $set) => $set('trailer_no', null))
-                            ->required(),
+                            ->afterStateUpdated(fn (callable $set) => $set('trailer_no', null)),
                         Forms\Components\Select::make('trailer_no')
                             ->label(trans('Trailer\'s') . " " . trans('Number'))
                             ->multiple()
@@ -100,11 +99,10 @@ class TripResource extends Resource
                                 if ($id > 0) {
                                     # code...
                                     $trailers = Company::find($id)->trailers;
-                                    return $trailers->pluck('number', 'id');
+                                    return $trailers->pluck('number', 'number');
                                 }
                                 return [];
-                            })
-                            ->required(),
+                            }),
 
                         Forms\Components\TextInput::make('chalan')
                             ->default(0)

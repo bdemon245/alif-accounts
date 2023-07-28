@@ -12,22 +12,27 @@ return new class extends Migration
     public function up(): void
     {
 
-        Schema::create('trailer_trip', function (Blueprint $table) {
+        Schema::create('company_trip', function (Blueprint $table) {
             $table->id();
             $table->foreignId('trip_id')
                 ->constrained()
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-            $table->foreignId('trailer_id')
+            $table->foreignId('company_id')
                 ->constrained()
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
+            $table->json('trailers')->comment("[
+                    {
+                        'numbers': 'array',
+                        'chalan_collected': 'boolean'
+                    }
+                ]");
             $table->bigInteger('chalan')->nullable();
             $table->bigInteger('rent')->nullable();
             $table->bigInteger('advance')->nullable();
             $table->bigInteger('due')->nullable();
             $table->bigInteger('commission')->nullable();
-            $table->boolean('chalan_returned')->default(false);
             $table->timestamps();
         });
     }

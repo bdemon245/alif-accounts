@@ -18,8 +18,5 @@ class Trailer extends Model
         return $this->belongsTo(Company::class);
     }
 
-    function trips(): BelongsToMany
-    {
-        return $this->belongsToMany(Trip::class);
-    }
+   
 }

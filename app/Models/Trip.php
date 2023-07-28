@@ -12,11 +12,10 @@ class Trip extends Model
 {
     use HasFactory;
     protected $guarded = [];
+    protected $casts = [
+        'trailers' => 'array'
+    ];
 
-    function companies(): BelongsTo
-    {
-        return $this->belongsTo(Company::class);
-    }
     function parties(): BelongsTo
     {
         return $this->belongsTo(Party::class);
@@ -25,8 +24,9 @@ class Trip extends Model
     {
         return $this->belongsTo(Factory::class);
     }
-    function trailers(): BelongsToMany
+
+    function companies(): BelongsToMany
     {
-        return $this->belongsToMany(Trailer::class);
+        return $this->belongsToMany(Company::class);
     }
 }

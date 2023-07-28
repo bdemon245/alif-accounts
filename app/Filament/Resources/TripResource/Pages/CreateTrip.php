@@ -16,21 +16,22 @@ class CreateTrip extends CreateRecord
     {
         $trip = '';
         foreach ($data['trailers'] as $key => $trailer) {
-            // dd($data['party_id']);
+            $items = [];
+            foreach ($trailer['trailer_no'] as $number) {
+                $item = [
+                    'number' => $number,
+                    'chalan_received' => 0,
+                ];
+                $items[] = $item;
+            }
+
             $trip = Trip::create([
                 'delivery_date' => $data["delivery_date"],
                 'party_id' => $data["party_id"],
                 'factory_id' => $data["factory_id"],
-                'company_id' => $trailer["company_id"],
                 'is_cash' => $data["is_cash"],
             ]);
-            foreach ($trailer['trailer_no'] as $trailer_id) {
-                $trip->trailers()->attach($trailer_id, [
-                    "chalan" => $trailer['chalan'],
-                    "advance" => $trailer['advance'],
-                    "due" => $trailer['due'],
-                ]);
-            }
+            dd($trip->companies);
         }
         return $trip;
     }

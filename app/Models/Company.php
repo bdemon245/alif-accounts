@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Spatie\Translatable\HasTranslations;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Company extends Model
@@ -25,9 +26,9 @@ class Company extends Model
     {
         return $this->hasMany(Trailer::class);
     }
-    function trips(): HasMany
+    function trips(): BelongsToMany
     {
-        return $this->hasMany(Trip::class);
+        return $this->belongsToMany(Trip::class);
     }
     /**
      * The "booted" method of the model.
