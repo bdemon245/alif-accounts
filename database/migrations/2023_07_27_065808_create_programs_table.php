@@ -12,24 +12,24 @@ return new class extends Migration
     public function up(): void
     {
 
-        Schema::create('trips', function (Blueprint $table) {
+        Schema::create('programs', function (Blueprint $table) {
             $table->id();
-             $table->foreignId('company_id')
+            $table->foreignId('party_id')
                 ->constrained()
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-            $table->foreignId('program_id')
+            $table->foreignId('factory_id')
                 ->constrained()
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-            $table->json('trailer_no');
-            $table->bigInteger('chalan')->nullable()->default(0);
-            $table->bigInteger('advance')->nullable()->default(0);
-            $table->bigInteger('due')->nullable()->default(0);
-            $table->bigInteger('commission')->nullable()->default(0);
-            $table->boolean('chalan_collected')->nullable()->default(0);  
+            $table->date('delivery_date');
+            $table->boolean('is_cash');
+            $table->integer('job_no')->nullable();
+            $table->bigInteger('weight')->comment('in KG');
+            $table->bigInteger('fare');
             $table->timestamps();
         });
+
     }
 
     /**
@@ -37,6 +37,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('trips');
+        Schema::dropIfExists('programs');
     }
 };
