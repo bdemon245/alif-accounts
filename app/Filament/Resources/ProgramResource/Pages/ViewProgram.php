@@ -17,13 +17,4 @@ class ViewProgram extends ViewRecord
             Actions\EditAction::make(),
         ];
     }
-
-    protected function mutateFormDataBeforeFill(array $data): array
-    {
-        // $trips = Program::find($data['id'])->trips->toArray();
-        // $data['trips'] = $trips;
-
-
-        return $data;
-    }
 }
