@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\ProgramResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\ProgramResource\RelationManagers;
+use App\Models\Trailer;
 use Closure;
 
 class ProgramResource extends Resource
@@ -148,12 +149,12 @@ class ProgramResource extends Resource
                                 }
                                 return [];
                             })
-                            ->createOptionForm([
-                                Forms\Components\TextInput::make('number')
-                                    ->label(trans("New") . " " . trans('Trailer'))
-                                    ->autofocus(true)
-                                    ->required(),
-                            ])
+                            // ->createOptionForm([
+                            //     Forms\Components\TextInput::make('number')
+                            //         ->label(trans("New") . " " . trans('Trailer'))
+                            //         ->autofocus(true)
+                            //         ->required(),
+                            // ])
                             ->columnSpan([
                                 'default' => 8,
                                 'lg' => 3
