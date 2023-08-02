@@ -12,11 +12,9 @@ class Trailer extends Model
 {
     use HasFactory;
     protected $guarded = [];
-    
-    function company(): BelongsTo
-    {
-        return $this->belongsTo(Company::class);
-    }
 
-   
+    function companies(): BelongsToMany
+    {
+        return $this->belongsToMany(Company::class);
+    }
 }

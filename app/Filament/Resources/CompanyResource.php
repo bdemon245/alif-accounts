@@ -4,8 +4,11 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\CompanyResource\Pages;
 use App\Filament\Resources\CompanyResource\RelationManagers;
+use App\Filament\Resources\CompanyResource\RelationManagers\TrailersRelationManager;
 use App\Models\Company;
 use Filament\Forms;
+use Filament\Forms\Components\Card;
+use Filament\Forms\Components\TextInput;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
@@ -36,7 +39,17 @@ class CompanyResource extends Resource
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
-            ]);
+                Forms\Components\Select::make('trailers')
+                    ->multiple()
+                    ->columnSpan(3)
+                    ->searchable(false)
+                    ->relationship('trailers', 'number')
+                    ->createOptionForm([
+                        Forms\Components\TextInput::make('number')
+                            ->label(trans("New") . " " . trans('Trailer'))
+                            ->required(),
+                    ]),
+            ])->columns(4);
     }
 
     public static function table(Table $table): Table
@@ -44,10 +57,7 @@ class CompanyResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name'),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()->since(),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()->since(),
+
             ])
             ->filters([
                 //
@@ -60,6 +70,13 @@ class CompanyResource extends Resource
                 Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
+
+    // public static function getRelations(): array
+    // {
+    //     return [
+    //         RelationManagers\TrailersRelationManager::class,
+    //     ];
+    // }
 
     public static function getPages(): array
     {

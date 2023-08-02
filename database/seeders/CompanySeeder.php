@@ -53,10 +53,10 @@ class CompanySeeder extends Seeder
 
         foreach ($companies as $key => $company) {
             foreach (range(1, 6) as $key => $value) {
-                Trailer::create([
-                    'company_id' => $company->id,
+                $trailer = Trailer::create([
                     'number' => trailerNumber()
                 ]);
+                $company->trailers()->attach($trailer->id);
             }
         }
     }

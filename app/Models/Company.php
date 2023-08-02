@@ -22,13 +22,13 @@ class Company extends Model
     {
         return $this->morphMany(Phone::class, 'phonable');
     }
-    function trailers(): HasMany
+    function trailers(): BelongsToMany
     {
-        return $this->hasMany(Trailer::class);
+        return $this->belongsToMany(Trailer::class);
     }
-    function trips(): BelongsToMany
+    function trips(): HasMany
     {
-        return $this->belongsToMany(Trip::class);
+        return $this->HasMany(Trip::class);
     }
     /**
      * The "booted" method of the model.

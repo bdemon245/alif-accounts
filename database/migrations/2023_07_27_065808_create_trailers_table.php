@@ -15,11 +15,20 @@ return new class extends Migration
 
         Schema::create('trailers', function (Blueprint $table) {
             $table->id();
+            $table->string('number');
+            $table->timestamps();
+        });
+
+        Schema::create('company_trailer', function (Blueprint $table) {
+            $table->id();
             $table->foreignId('company_id')
                 ->constrained()
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-            $table->string('number');
+            $table->foreignId('trailer_id')
+                ->constrained()
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
             $table->timestamps();
         });
 
