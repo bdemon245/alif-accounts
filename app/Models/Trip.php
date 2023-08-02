@@ -29,4 +29,8 @@ class Trip extends Model
     {
         return $this->belongsTo(Program::class);
     }
+    function company(): BelongsTo
+    {
+        return $this->belongsTo(Company::class);
+    }
 }

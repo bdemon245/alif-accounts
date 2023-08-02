@@ -10,12 +10,15 @@ use App\Models\Program;
 use Filament\Resources\Form;
 use Filament\Resources\Table;
 use Filament\Resources\Resource;
+use Filament\Forms\Components\Grid;
+use Filament\Tables\Filters\Filter;
 use Filament\Forms\Components\Repeater;
+use Filament\Tables\Columns\Layout\Panel;
+use Filament\Tables\Columns\Layout\Stack;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\ProgramResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\ProgramResource\RelationManagers;
-use Filament\Forms\Components\Grid;
 
 class ProgramResource extends Resource
 {
@@ -143,22 +146,45 @@ class ProgramResource extends Resource
             ])->columns(1);
     }
 
+    protected function getTableFiltersFormColumns(): int
+    {
+        return 3;
+    }
+
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('party_id'),
-                Tables\Columns\TextColumn::make('factory_id'),
                 Tables\Columns\TextColumn::make('delivery_date')
-                    ->date(),
-                Tables\Columns\IconColumn::make('type')
-                    ->boolean(),
-                Tables\Columns\TextColumn::make('job_no'),
-                Tables\Columns\TextColumn::make('weight'),
-                Tables\Columns\TextColumn::make('fare'),
+                    ->searchable()
+                    ->label(trans('Delivery\'s') . ' ' . trans('Date'))
+                    ->date('d / m / Y'),
+                Tables\Columns\ViewColumn::make('id')
+                    ->view('filament.tables.columns.program-details'),
+                Tables\Columns\BadgeColumn::make('is_cash')
+                    ->label(trans('Account'))
+                    ->enum([
+                        true => trans('Cash'),
+                        false => trans('Due'),
+                    ])
+                    ->colors([
+                        'secondary',
+                        'success' => static fn ($state): bool => $state,
+                        'danger' => static fn ($state): bool => !$state,
+                    ]),
+                Tables\Columns\ViewColumn::make('trips')
+                    ->view('filament.tables.columns.trip-list'),
+
             ])
             ->filters([
-                //
+                Filter::make('is_cash')
+                    ->label(trans('Cash'))
+                    // ->indicator(trans('Cash'))
+                    ->query(fn (Builder $query): Builder => $query->where('is_cash', true)),
+                Filter::make('is_due')
+                    ->label(trans('Due'))
+                    // ->indicator(trans('Due'))
+                    ->query(fn (Builder $query): Builder => $query->where('is_cash', false)),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
