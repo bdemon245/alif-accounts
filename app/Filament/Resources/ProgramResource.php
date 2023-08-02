@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\ProgramResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\ProgramResource\RelationManagers;
+use Closure;
 
 class ProgramResource extends Resource
 {
@@ -48,18 +49,28 @@ class ProgramResource extends Resource
                     Forms\Components\TextInput::make('weight')
                         ->label('Weight')
                         ->default(0)
-                        ->prefix('kg')
+                        ->suffix('kg')
                         ->required(),
                     Forms\Components\TextInput::make('fare')
                         ->label(trans("Rent"))
                         ->default(0)
-                        ->prefix(html_entity_decode('&#2547;'))
+                        ->suffix(html_entity_decode('&#2547;'))
                         ->required(),
                     Forms\Components\Toggle::make('is_cash')
                         ->label(trans("Cash"))
                         ->default(false)
                         ->inline(false)
-                        ->required(),
+                        ->reactive()
+                        ->required()
+                        ->afterStateUpdated(
+                            function ($state, callable $set) {
+                                if ($state) {
+                                    $set('job_no', null);
+                                } else {
+                                    $set('job_no', 'hidden');
+                                }
+                            }
+                        ),
                 ]),
                 Forms\Components\Grid::make()
                     ->columns(3)
@@ -99,17 +110,31 @@ class ProgramResource extends Resource
 
 
                         Forms\Components\TextInput::make('job_no')
+                            ->hidden(fn (Closure $get): bool => $get('is_cash') == false)
+                            ->requiredWith('is_cash')
                             ->label(trans("Job") . " " . trans('No.')),
                     ]),
                 Repeater::make('trips')
+                    ->hidden(fn (Closure $get): bool => $get('is_cash') == true)
                     ->relationship()
+                    ->columns(8)
                     ->schema([
                         Forms\Components\Select::make('company_id')
                             ->label(trans('Company'))
                             ->options(Company::all()->pluck('name', 'id'))
                             ->reactive()
                             ->searchable()
-                            ->afterStateUpdated(fn (callable $set) => $set('trailer_no', null)),
+                            ->afterStateUpdated(fn (callable $set) => $set('trailer_no', null))
+                            ->createOptionForm([
+                                Forms\Components\TextInput::make('company')
+                                    ->label(trans("New") . " " . trans('Company'))
+                                    ->autofocus(true)
+                                    ->required(),
+                            ])
+                            ->columnSpan([
+                                'default' => 8,
+                                'lg' => 2
+                            ]),
                         Forms\Components\Select::make('trailer_no')
                             ->label(trans('Trailer\'s') . " " . trans('Number'))
                             ->searchable()
@@ -122,26 +147,139 @@ class ProgramResource extends Resource
                                     return $trailers->pluck('number', 'number');
                                 }
                                 return [];
-                            }),
+                            })
+                            ->createOptionForm([
+                                Forms\Components\TextInput::make('number')
+                                    ->label(trans("New") . " " . trans('Trailer'))
+                                    ->autofocus(true)
+                                    ->required(),
+                            ])
+                            ->columnSpan([
+                                'default' => 8,
+                                'lg' => 3
+                            ]),
 
                         Forms\Components\TextInput::make('chalan')
-                            ->default(0)
+                            ->reactive()
+                            ->afterStateUpdated(function ($state, callable $get, callable $set) {
+                                $set('due', $state - $get('advance'));
+                            })
                             ->numeric()
                             ->placeholder(trans('Advance'))
-                            ->prefix(html_entity_decode('&#2547;')),
+                            ->suffix(html_entity_decode('&#2547;'))
+                            ->default(0)
+                            ->columnSpan([
+                                'default' => 8,
+                                'sm' => 4,
+                                'lg' => 1,
+                            ]),
                         Forms\Components\TextInput::make('advance')
-                            ->default(0)
+                            ->reactive()
+                            ->afterStateUpdated(fn ($state, callable $get, callable $set) => $set('due', $get('chalan') - $state))
                             ->numeric()
                             ->placeholder(trans('Advance'))
-                            ->prefix(html_entity_decode('&#2547;')),
+                            ->suffix(html_entity_decode('&#2547;'))
+                            ->default(0)
+                            ->columnSpan([
+                                'default' => 8,
+                                'sm' => 4,
+                                'lg' => 1,
+                            ]),
                         Forms\Components\TextInput::make('due')
                             ->numeric()
-                            ->default(0)
                             ->placeholder(trans('Due'))
-                            ->prefix(html_entity_decode('&#2547;')),
+                            ->suffix(html_entity_decode('&#2547;'))
+                            ->default(0)
+                            ->columnSpan([
+                                'default' => 8,
+                                'sm' => 8,
+                                'lg' => 1,
+                            ]),
+                    ]),
+                Repeater::make('trips')
+                    ->hidden(fn (Closure $get): bool => $get('is_cash') == false)
+                    ->relationship()
+                    ->columns(8)
+                    ->schema([
+                        Forms\Components\Select::make('company_id')
+                            ->label(trans('Company'))
+                            ->options(Company::all()->pluck('name', 'id'))
+                            ->reactive()
+                            ->searchable()
+                            ->afterStateUpdated(fn (callable $set) => $set('trailer_no', null))
+                            ->createOptionForm([
+                                Forms\Components\TextInput::make('company')
+                                    ->label(trans("New") . " " . trans('Company'))
+                                    ->autofocus(true)
+                                    ->required(),
+                            ])
+                            ->columnSpan([
+                                'default' => 8,
+                                'lg' => 2
+                            ]),
+                        Forms\Components\Select::make('trailer_no')
+                            ->label(trans('Trailer\'s') . " " . trans('Number'))
+                            ->searchable()
+                            ->multiple()
+                            ->options(function (callable $get) {
+                                $id = $get('company_id');
+                                if ($id > 0) {
+                                    # code...
+                                    $trailers = Company::find($id)->trailers;
+                                    return $trailers->pluck('number', 'number');
+                                }
+                                return [];
+                            })
+                            ->createOptionForm([
+                                Forms\Components\TextInput::make('number')
+                                    ->label(trans("New") . " " . trans('Trailer'))
+                                    ->autofocus(true)
+                                    ->required(),
+                            ])
+                            ->columnSpan([
+                                'default' => 8,
+                                'lg' => 3
+                            ]),
 
-                    ])
-                    ->columns(5),
+                        Forms\Components\TextInput::make('chalan')
+                            ->reactive()
+                            ->afterStateUpdated(function ($state, callable $get, callable $set) {
+                                $set('due', $state - $get('rent'));
+                            })
+                            ->numeric()
+                            ->suffix(html_entity_decode('&#2547;'))
+                            ->default(0)
+                            ->columnSpan([
+                                'default' => 8,
+                                'sm' => 4,
+                                'lg' => 1,
+                            ]),
+
+                        Forms\Components\TextInput::make('rent')
+                            ->label(trans('Company\'s') . ' ' . trans('Fare'))
+                            ->reactive()
+                            ->afterStateUpdated(fn ($state, callable $get, callable $set) => $set('commission', $get('chalan') - $state))
+                            ->numeric()
+                            ->placeholder(trans('Rent'))
+                            ->suffix(html_entity_decode('&#2547;'))
+                            ->default(0)
+                            ->columnSpan([
+                                'default' => 8,
+                                'sm' => 4,
+                                'lg' => 1,
+                            ]),
+                        Forms\Components\TextInput::make('commission')
+                            ->numeric()
+                            ->placeholder(trans('Commission'))
+                            ->suffix(html_entity_decode('&#2547;'))
+                            ->default(0)
+                            ->columnSpan([
+                                'default' => 8,
+                                'sm' => 8,
+                                'lg' => 1,
+                            ]),
+
+                    ]),
 
             ])->columns(1);
     }

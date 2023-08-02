@@ -2,19 +2,21 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\CompanyResource\Pages;
-use App\Filament\Resources\CompanyResource\RelationManagers;
-use App\Filament\Resources\CompanyResource\RelationManagers\TrailersRelationManager;
-use App\Models\Company;
 use Filament\Forms;
+use Filament\Tables;
+use App\Models\Company;
+use App\Models\Trailer;
+use Illuminate\Support\Arr;
+use Filament\Resources\Form;
+use Filament\Resources\Table;
+use Filament\Resources\Resource;
 use Filament\Forms\Components\Card;
 use Filament\Forms\Components\TextInput;
-use Filament\Resources\Form;
-use Filament\Resources\Resource;
-use Filament\Resources\Table;
-use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
+use App\Filament\Resources\CompanyResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\CompanyResource\RelationManagers;
+use App\Filament\Resources\CompanyResource\RelationManagers\TrailersRelationManager;
 
 class CompanyResource extends Resource
 {
@@ -36,17 +38,33 @@ class CompanyResource extends Resource
     {
         return $form
             ->schema([
+                Forms\Components\TextInput::make('id')
+                    ->required()
+                    ->hidden()
+                    ->disabled()
+                    ->maxLength(255),
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\Select::make('trailers')
                     ->multiple()
-                    ->columnSpan(3)
-                    ->searchable(false)
                     ->relationship('trailers', 'number')
+                    ->columnSpan(3)
+                    ->searchable()
+                    ->options(function ($state, callable $get) {
+                        $id = $get('id');
+                        if ($id > 0) {
+                            $exists = Company::find($id)->trailers->pluck('number')->toArray();
+                            $filtered = Trailer::get()->whereNotIn('number', $exists)->pluck('number', 'id');
+
+                            return $filtered->all();
+                        }
+                        return [];
+                    })
                     ->createOptionForm([
                         Forms\Components\TextInput::make('number')
                             ->label(trans("New") . " " . trans('Trailer'))
+                            ->autofocus(true)
                             ->required(),
                     ]),
             ])->columns(4);

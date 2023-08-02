@@ -14,7 +14,7 @@ return new class extends Migration
 
         Schema::create('trips', function (Blueprint $table) {
             $table->id();
-             $table->foreignId('company_id')
+            $table->foreignId('company_id')
                 ->constrained()
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
@@ -26,8 +26,9 @@ return new class extends Migration
             $table->bigInteger('chalan')->nullable()->default(0);
             $table->bigInteger('advance')->nullable()->default(0);
             $table->bigInteger('due')->nullable()->default(0);
+            $table->bigInteger('rent')->nullable()->default(0);
             $table->bigInteger('commission')->nullable()->default(0);
-            $table->boolean('chalan_collected')->nullable()->default(0);  
+            $table->boolean('chalan_collected')->nullable()->default(0);
             $table->timestamps();
         });
     }

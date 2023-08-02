@@ -248,7 +248,8 @@ return [
             'alignment' => 'right',
         ],
         'sidebar' => [
-            'is_collapsible_on_desktop' => false,
+            'is_collapsible_on_desktop' => true,
+            'is_collapsed_on_desktop' => false,
             'groups' => [
                 'are_collapsible' => true,
             ],
