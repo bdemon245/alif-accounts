@@ -162,11 +162,12 @@ class ProgramResource extends Resource
 
                         Forms\Components\TextInput::make('chalan')
                             ->reactive()
+                            ->label(trans('Main') . " " . trans('Fare'))
                             ->afterStateUpdated(function ($state, callable $get, callable $set) {
                                 $set('due', $state - $get('advance'));
                             })
                             ->numeric()
-                            ->placeholder(trans('Advance'))
+                            ->placeholder(trans('Main') . " " . trans('Fare'))
                             ->suffix(html_entity_decode('&#2547;'))
                             ->default(0)
                             ->columnSpan([
@@ -244,6 +245,7 @@ class ProgramResource extends Resource
 
                         Forms\Components\TextInput::make('chalan')
                             ->reactive()
+
                             ->afterStateUpdated(function ($state, callable $get, callable $set) {
                                 $set('due', $state - $get('rent'));
                             })
@@ -300,18 +302,9 @@ class ProgramResource extends Resource
                     ->date('d / m / Y'),
                 Tables\Columns\ViewColumn::make('id')
                     ->view('filament.tables.columns.program-details'),
-                Tables\Columns\BadgeColumn::make('is_cash')
-                    ->label(trans('Account'))
-                    ->enum([
-                        true => trans('Cash'),
-                        false => trans('Due'),
-                    ])
-                    ->colors([
-                        'secondary',
-                        'success' => static fn ($state): bool => $state,
-                        'danger' => static fn ($state): bool => !$state,
-                    ]),
                 Tables\Columns\ViewColumn::make('trips')
+                    ->label(trans('Trip\'s') . " " . trans('Details'))
+                    ->extraAttributes(['class' => 'bg-rose-500'])
                     ->view('filament.tables.columns.trip-list'),
 
             ])
