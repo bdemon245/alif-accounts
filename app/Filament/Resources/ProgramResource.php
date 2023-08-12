@@ -79,6 +79,7 @@ class ProgramResource extends Resource
                         Forms\Components\Select::make('party_id')
                             ->label('Party')
                             ->default(1)
+                            ->relationship('party', 'name')
                             ->options(Party::all()->pluck('name', 'id'))
                             ->required()
                             ->reactive()
@@ -90,6 +91,7 @@ class ProgramResource extends Resource
                         Forms\Components\Select::make('factory_id')
                             ->label('Factory')
                             ->default(1)
+                            ->relationship('factory', 'name')
                             ->options(function (callable $get) {
                                 $id = $get('party_id');
                                 if ($id > 0) {
@@ -103,9 +105,6 @@ class ProgramResource extends Resource
                             ->createOptionForm([
                                 Forms\Components\TextInput::make('name')
                                     ->label(trans("Factory's") . " " . trans('Name'))
-                                    ->required(),
-                                Forms\Components\Textarea::make('address')
-                                    ->label(trans("Factory's") . " " . trans('Address'))
                                     ->required(),
                             ]),
 
@@ -301,6 +300,7 @@ class ProgramResource extends Resource
                     ->label(trans('Delivery\'s') . ' ' . trans('Date'))
                     ->date('d / m / Y'),
                 Tables\Columns\ViewColumn::make('id')
+                    ->label(__('Program\'s') . ' ' . __('Details'))
                     ->view('filament.tables.columns.program-details'),
                 Tables\Columns\ViewColumn::make('trips')
                     ->label(trans('Trip\'s') . " " . trans('Details'))
@@ -312,11 +312,11 @@ class ProgramResource extends Resource
                 Filter::make('is_cash')
                     ->label(trans('Cash'))
                     // ->indicator(trans('Cash'))
-                    ->query(fn (Builder $query): Builder => $query->where('is_cash', true)),
+                    ->query(fn (Builder $query): Builder => $query->orWhere('is_cash', true)),
                 Filter::make('is_due')
                     ->label(trans('Due'))
                     // ->indicator(trans('Due'))
-                    ->query(fn (Builder $query): Builder => $query->where('is_cash', false)),
+                    ->query(fn (Builder $query): Builder => $query->orWhere('is_cash', false)),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
