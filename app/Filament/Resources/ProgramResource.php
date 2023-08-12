@@ -103,9 +103,19 @@ class ProgramResource extends Resource
                             })
                             ->required()
                             ->createOptionForm([
-                                Forms\Components\TextInput::make('name')
-                                    ->label(trans("Factory's") . " " . trans('Name'))
-                                    ->required(),
+                                Grid::make()
+                                    ->columns(2)
+                                    ->schema([
+                                        Forms\Components\Select::make('party_id')
+                                            ->label('Party')
+                                            ->default(1)
+                                            ->relationship('party', 'name')
+                                            ->options(Party::all()->pluck('name', 'id'))
+                                            ->required(),
+                                        Forms\Components\TextInput::make('name')
+                                            ->label(trans("Factory's") . " " . trans('Name'))
+                                            ->required(),
+                                    ])
                             ]),
 
 
@@ -148,12 +158,21 @@ class ProgramResource extends Resource
                                 }
                                 return [];
                             })
-                            // ->createOptionForm([
-                            //     Forms\Components\TextInput::make('number')
-                            //         ->label(trans("New") . " " . trans('Trailer'))
-                            //         ->autofocus(true)
-                            //         ->required(),
-                            // ])
+                            ->createOptionForm([
+                                Grid::make()
+                                    ->columns(2)
+                                    ->schema([
+                                        Forms\Components\Select::make('company_id')
+                                            ->label('Company')
+                                            ->default(1)
+                                            ->relationship('company', 'name')
+                                            ->options(Company::all()->pluck('name', 'id'))
+                                            ->required(),
+                                        Forms\Components\TextInput::make('trailer')
+                                            ->label(trans("Trailer's") . " " . trans('No.'))
+                                            ->required(),
+                                    ])
+                            ])
                             ->columnSpan([
                                 'default' => 8,
                                 'lg' => 3
@@ -232,10 +251,19 @@ class ProgramResource extends Resource
                                 return [];
                             })
                             ->createOptionForm([
-                                Forms\Components\TextInput::make('number')
-                                    ->label(trans("New") . " " . trans('Trailer'))
-                                    ->autofocus(true)
-                                    ->required(),
+                                Grid::make()
+                                    ->columns(2)
+                                    ->schema([
+                                        Forms\Components\Select::make('company_id')
+                                            ->label('Company')
+                                            ->default(1)
+                                            ->relationship('company', 'name')
+                                            ->options(Company::all()->pluck('name', 'id'))
+                                            ->required(),
+                                        Forms\Components\TextInput::make('trailer')
+                                            ->label(trans("Trailer's") . " " . trans('No.'))
+                                            ->required(),
+                                    ])
                             ])
                             ->columnSpan([
                                 'default' => 8,
