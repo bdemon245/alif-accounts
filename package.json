@@ -16,6 +16,7 @@
     "dependencies": {
         "@tailwindcss/forms": "^0.5.4",
         "@tailwindcss/typography": "^0.5.9",
+        "flag-icons": "^6.11.0",
         "tippy.js": "^6.3.7"
     }
 }

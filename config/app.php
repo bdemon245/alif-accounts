@@ -159,7 +159,8 @@ return [
         /*
          * Package Service Providers...
          */
-
+        App\Providers\FilamentServiceProvider::class,
+        App\Providers\LanguageServiceProvider::class,
         /*
          * Application Service Providers...
          */
