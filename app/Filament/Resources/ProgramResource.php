@@ -158,21 +158,21 @@ class ProgramResource extends Resource
                                 }
                                 return [];
                             })
-                            ->createOptionForm([
-                                Grid::make()
-                                    ->columns(2)
-                                    ->schema([
-                                        Forms\Components\Select::make('company_id')
-                                            ->label('Company')
-                                            ->default(1)
-                                            ->relationship('company', 'name')
-                                            ->options(Company::all()->pluck('name', 'id'))
-                                            ->required(),
-                                        Forms\Components\TextInput::make('trailer')
-                                            ->label(trans("Trailer's") . " " . trans('No.'))
-                                            ->required(),
-                                    ])
-                            ])
+                            // ->createOptionForm([
+                            //     Grid::make()
+                            //         ->columns(2)
+                            //         ->schema([
+                            //             Forms\Components\Select::make('company_id')
+                            //                 ->label('Company')
+                            //                 ->default(1)
+                            //                 ->relationship('company', 'name')
+                            //                 ->options(Company::all()->pluck('name', 'id'))
+                            //                 ->required(),
+                            //             Forms\Components\TextInput::make('trailer')
+                            //                 ->label(trans("Trailer's") . " " . trans('No.'))
+                            //                 ->required(),
+                            //         ])
+                            // ])
                             ->columnSpan([
                                 'default' => 8,
                                 'lg' => 3
@@ -250,21 +250,21 @@ class ProgramResource extends Resource
                                 }
                                 return [];
                             })
-                            ->createOptionForm([
-                                Grid::make()
-                                    ->columns(2)
-                                    ->schema([
-                                        Forms\Components\Select::make('company_id')
-                                            ->label('Company')
-                                            ->default(1)
-                                            ->relationship('company', 'name')
-                                            ->options(Company::all()->pluck('name', 'id'))
-                                            ->required(),
-                                        Forms\Components\TextInput::make('trailer')
-                                            ->label(trans("Trailer's") . " " . trans('No.'))
-                                            ->required(),
-                                    ])
-                            ])
+                            // ->createOptionForm([
+                            //     Grid::make()
+                            //         ->columns(2)
+                            //         ->schema([
+                            //             Forms\Components\Select::make('company_id')
+                            //                 ->label('Company')
+                            //                 ->default(1)
+                            //                 ->relationship('company', 'name')
+                            //                 ->options(Company::all()->pluck('name', 'id'))
+                            //                 ->required(),
+                            //             Forms\Components\TextInput::make('trailer')
+                            //                 ->label(trans("Trailer's") . " " . trans('No.'))
+                            //                 ->required(),
+                            //         ])
+                            // ])
                             ->columnSpan([
                                 'default' => 8,
                                 'lg' => 3

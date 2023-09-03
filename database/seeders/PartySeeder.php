@@ -2,11 +2,12 @@
 
 namespace Database\Seeders;
 
-use App\Models\Factory;
 use App\Models\Party;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
+use App\Models\Phone;
+use App\Models\Factory;
 use Illuminate\Support\Arr;
+use Illuminate\Database\Seeder;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class PartySeeder extends Seeder
 {
@@ -55,6 +56,16 @@ class PartySeeder extends Seeder
             $factory = Factory::create([
                 'party_id' => $item->id,
                 'name' => str($name)->ltrim(','),
+            ]);
+            $phone = Phone::create([
+                'number' => fake()->phoneNumber(),
+                'phonable_type' => Factory::class,
+                'phonable_id' => $factory->id
+            ]);
+            $phone = Phone::create([
+                'number' => fake()->phoneNumber(),
+                'phonable_type' => Factory::class,
+                'phonable_id' => $factory->id
             ]);
         }
     }

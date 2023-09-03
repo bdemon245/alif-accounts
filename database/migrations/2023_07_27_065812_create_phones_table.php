@@ -14,7 +14,7 @@ return new class extends Migration
 
         Schema::create('phones', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('number');
+            $table->string('number');
             $table->text('phonable_type');
             $table->bigInteger('phonable_id');
             $table->timestamps();
