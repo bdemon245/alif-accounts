@@ -7,6 +7,18 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
+# About This Project
+This is a multilingual finance & data management system for Transport Agencies developed using Laravel & FilamentPHP
+
+### Core Features:
+- Reactive & Server-side state management
+- Multi Lingual (_Select from bangla & english_)
+
+### Test Credentials:
+- Email: admin@wisedev.xyz
+- Password: password
+
+
 ## About Laravel
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
